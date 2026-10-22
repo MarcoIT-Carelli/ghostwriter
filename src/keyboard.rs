@@ -74,6 +74,9 @@ impl Keyboard {
         keys.insert(EvdevKey::KEY_LEFTSHIFT);
         keys.insert(EvdevKey::KEY_MINUS);
         keys.insert(EvdevKey::KEY_EQUAL);
+        // Tasti del tastierino numerico: su reMarkable 3.28 KEY_EQUAL produce '-' invece di '='
+        keys.insert(EvdevKey::KEY_KPPLUS);
+        keys.insert(EvdevKey::KEY_KPEQUAL);
         keys.insert(EvdevKey::KEY_LEFTBRACE);
         keys.insert(EvdevKey::KEY_RIGHTBRACE);
         keys.insert(EvdevKey::KEY_BACKSLASH);
@@ -182,7 +185,7 @@ impl Keyboard {
         key_map.insert('(', (EvdevKey::KEY_9, true));
         key_map.insert(')', (EvdevKey::KEY_0, true));
         key_map.insert('_', (EvdevKey::KEY_MINUS, true));
-        key_map.insert('+', (EvdevKey::KEY_EQUAL, true));
+        key_map.insert('+', (EvdevKey::KEY_KPPLUS, false));
         key_map.insert('{', (EvdevKey::KEY_LEFTBRACE, true));
         key_map.insert('}', (EvdevKey::KEY_RIGHTBRACE, true));
         key_map.insert('|', (EvdevKey::KEY_BACKSLASH, true));
@@ -195,7 +198,7 @@ impl Keyboard {
 
         // Common punctuation
         key_map.insert('-', (EvdevKey::KEY_MINUS, false));
-        key_map.insert('=', (EvdevKey::KEY_EQUAL, false));
+        key_map.insert('=', (EvdevKey::KEY_KPEQUAL, false));
         key_map.insert('[', (EvdevKey::KEY_LEFTBRACE, false));
         key_map.insert(']', (EvdevKey::KEY_RIGHTBRACE, false));
         key_map.insert('\\', (EvdevKey::KEY_BACKSLASH, false));
