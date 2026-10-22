@@ -97,14 +97,17 @@ impl LLMEngine for Google {
         let request_future = async {
             let client = reqwest::Client::new();
             let response = client
-                .post(format!("{}/v1beta/models/{}:generateContent?key={}", self.base_url, self.model, self.api_key))
+                .post(format!("{}/v1beta/models/{}:generateContent", self.base_url, self.model))
+                .header("x-goog-api-key", self.api_key.as_str())
                 .header("Content-Type", "application/json")
                 .json(&body)
                 .send()
                 .await?;
 
             if !response.status().is_success() {
-                return Err(anyhow::anyhow!("API Error: {}", response.status()));
+                let status = response.status();
+                let error_body = response.text().await.unwrap_or_default();
+                return Err(anyhow::anyhow!("API Error: {} - {}", status, error_body));
             }
 
             let body_text = response.text().await?;
